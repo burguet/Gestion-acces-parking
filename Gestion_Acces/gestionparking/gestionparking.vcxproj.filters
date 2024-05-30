@@ -57,11 +57,11 @@
     <QtMoc Include="User.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="BDD.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BDD.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Demande.h">
       <Filter>Header Files</Filter>
     </ClInclude>

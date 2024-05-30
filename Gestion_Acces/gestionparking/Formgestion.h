@@ -2,41 +2,38 @@
 #define FORMGESTION_H
 
 #include <QWidget>
+#include <QLineEdit>
 #include <QPushButton>
-#include <QTableWidget>
 #include <QVBoxLayout>
+#include <QTableWidget>
 #include <QLabel>
-#include <QImage>
-#include <QPixmap>
-#include <QByteArray>
-#include <QFile>
 #include <QMessageBox>
 #include "User.h"
-#include "BDD.h"
 
 class Formgestion : public QWidget {
     Q_OBJECT
+
 public:
-    explicit Formgestion(QWidget* parent = nullptr);
+    Formgestion(QWidget* parent = nullptr);
 
 private slots:
     void Accepter();
     void Refuser();
     void Incomplete();
     void deconnexion();
-    void chargerDonnees();
     void cellDoubleClicked(int row, int column);
 
 private:
-    QList<Demande> demandes;
+    void chargerDonnees();
 
     QPushButton* button1;
     QPushButton* button2;
     QPushButton* button3;
     QPushButton* button4;
-
     QTableWidget* tableWidget;
+    QLineEdit* lineEdit; // Added QLineEdit member
     User user;
+    QList<Demande> demandes;
 };
 
 #endif // FORMGESTION_H

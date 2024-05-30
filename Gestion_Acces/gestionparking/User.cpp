@@ -36,18 +36,21 @@ bool User::isValid() const {
 }
 
 void User::Accept(Demande d) {
-    //return BDD::isAccept()->Accept();
+    
     BDD::getInstance()->acceptDemande(d.id);
+    BDD::getInstance()->sendEmail(d.mail, d.nom, "Demande d'acces parking", "Votre demande est accepter");
 }
 
 void User::Refuser(Demande d)
 {
+    BDD::getInstance()->sendEmail(d.mail, d.nom, "Demande d'acces parking", "Votre demande est refuser");
     BDD::getInstance()->refuserDemande(d.id);
 }
 
 void User::Incomplete(Demande d)
 {
     BDD::getInstance()->attenteDemande(d.id);
+    BDD::getInstance()->sendEmail(d.mail, d.nom, "Demande d'acces parking", "Votre demande est incomplete");
 }
 
 bool User::connexion() {
@@ -62,8 +65,16 @@ bool User::connexion() {
         // Créer une nouvelle instance de la fenêtre de gestion
         Formgestion* formGestion = new Formgestion;
         formGestion->show(); // Afficher la nouvelle fenêtre de gestion
+        return true;
     }
+    return false;
 }
+
+void User::sendMessage(Demande d, const QString& message)
+{
+    BDD::getInstance()->EchangeMessage(d.id, message);
+}
+
 QList<Demande> User::getListeDemandes() {
     return BDD::getInstance()->getListeDemandes();
 }

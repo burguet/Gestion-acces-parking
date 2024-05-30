@@ -49,7 +49,7 @@ void Formconnexion::message()
     }
     else
     {
-        QMessageBox(QMessageBox::Icon::Warning, "Attention", "Password ou login incorrect", QMessageBox::Button::Ok, this).exec();
+        QMessageBox(QMessageBox::Icon::Warning, "Attention", "Password ou login incorrect (si oublie du mot de passe appeler administrateur)", QMessageBox::Button::Ok, this).exec();
     }
     
 }

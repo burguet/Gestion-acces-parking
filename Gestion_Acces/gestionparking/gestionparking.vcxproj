@@ -110,7 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Formgestion.h" />
-    <ClInclude Include="BDD.h" />
+    <QtMoc Include="BDD.h" />
     <ClInclude Include="Demande.h" />
     <QtMoc Include="User.h" />
   </ItemGroup>

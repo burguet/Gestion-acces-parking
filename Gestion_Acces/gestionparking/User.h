@@ -32,6 +32,8 @@ public:
     void Incomplete(Demande d);
     // Fonction pour tenter de se connecter à la base de données
     bool connexion();
+    void sendMessage(Demande d, const QString& message);
+
 
 private:
     QString m_login;

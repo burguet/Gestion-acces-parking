@@ -14,15 +14,31 @@ Formgestion::Formgestion(QWidget* parent) : QWidget(parent) {
     headers << "Nom" << "Prenom" << "Mail" << "statut" << "immatriculation" << "date" << "cartegrise";
     tableWidget->setHorizontalHeaderLabels(headers);
 
-    // Créer un layout vertical pour organiser les widgets
+    // Créer un layout vertical pour organiser les boutons
+    QVBoxLayout* buttonLayout = new QVBoxLayout;
+    buttonLayout->addWidget(button1);
+    buttonLayout->addWidget(button2);
+    buttonLayout->addWidget(button3);
+    buttonLayout->addWidget(button4);
+    buttonLayout->addStretch(); // Ajoute de l'espace supplémentaire en bas
+
+    // Créer un QLineEdit et un QLabel
+    lineEdit = new QLineEdit; // Initialize lineEdit
+  
+
+    // Créer un layout vertical pour organiser le QLineEdit et le QLabel
+    QVBoxLayout* sideLayout = new QVBoxLayout;
+    sideLayout->addWidget(lineEdit);
+
+    // Créer un layout horizontal pour organiser le tableau et le layout de droite
+    QHBoxLayout* mainLayout = new QHBoxLayout;
+    mainLayout->addWidget(tableWidget);
+    mainLayout->addLayout(sideLayout);
+
+    // Créer un layout vertical principal pour organiser les layouts des boutons et du tableau avec celui de droite
     QVBoxLayout* layout = new QVBoxLayout;
-    layout->addWidget(button1);
-    layout->addWidget(button2);
-    layout->addWidget(button3);
-    layout->addWidget(button4);
-   
-    layout->addWidget(tableWidget);
-    tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    layout->addLayout(buttonLayout);
+    layout->addLayout(mainLayout);
 
     // Définir le layout pour cette fenêtre
     setLayout(layout);
@@ -40,58 +56,65 @@ Formgestion::Formgestion(QWidget* parent) : QWidget(parent) {
     tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
 }
 
-void Formgestion::Accepter()
-{
+
+void Formgestion::Accepter() {
     QPushButton* senderButton = qobject_cast<QPushButton*>(sender());
     if (senderButton == button1) {
         QItemSelectionModel* select = tableWidget->selectionModel();
-        if (select != nullptr)
-        {
+        if (select != nullptr) {
             QModelIndexList selection = select->selectedRows();
-            if (selection.size() == 1)
-            {
+            if (selection.size() == 1) {
                 int row = selection[0].row();
-                // Récupérer l'ID de la demande sélectionner
-                user.Accept(demandes[row]); // Supposons que la fonction Accept prend un int comme argument
+                // Récupérer l'ID de la demande sélectionnée
+                Demande demande = demandes[row];
+                QString message = lineEdit->text(); // Récupérer le texte de QLineEdit
+
+                user.Accept(demande); // Accepter la demande
+                user.sendMessage(demande, message); // Envoyer le message avec la demande
                 chargerDonnees();
+
+                lineEdit->clear(); // Vider le contenu de QLineEdit
             }
         }
     }
 }
 
-void Formgestion::Refuser()
-{
+void Formgestion::Refuser() {
     QPushButton* senderButton = qobject_cast<QPushButton*>(sender());
     if (senderButton == button2) {
         QItemSelectionModel* select = tableWidget->selectionModel();
-        if (select != nullptr)
-        {
+        if (select != nullptr) {
             QModelIndexList selection = select->selectedRows();
-            if (selection.size() == 1)
-            {
+            if (selection.size() == 1) {
                 int row = selection[0].row();
-                // Récupérer l'ID de la demande sélectionner
-                user.Refuser(demandes[row]); // Supposons que la fonction refuse prend un int comme argument
+                // Récupérer l'ID de la demande sélectionnée
+                Demande demande = demandes[row];
+                QString message = lineEdit->text(); // Récupérer le texte de QLineEdit
+
+                user.Refuser(demande); // Accepter la demande
                 chargerDonnees();
             }
         }
     }
 }
 
-void Formgestion::Incomplete()
-{
+void Formgestion::Incomplete() {
     QPushButton* senderButton = qobject_cast<QPushButton*>(sender());
     if (senderButton == button3) {
         QItemSelectionModel* select = tableWidget->selectionModel();
-        if (select != nullptr)
-        {
+        if (select != nullptr) {
             QModelIndexList selection = select->selectedRows();
-            if (selection.size() == 1)
-            {
+            if (selection.size() == 1) {
                 int row = selection[0].row();
-                // Récupérer l'ID de la demande sélectionner
-                user.Incomplete(demandes[row]); // Supposons que la fonction refuse prend un int comme argument
+                // Récupérer l'ID de la demande sélectionnée
+                Demande demande = demandes[row];
+                QString message = lineEdit->text(); // Récupérer le texte de QLineEdit
+
+                user.Incomplete(demande); // Accepter la demande
+                user.sendMessage(demande, message); // Envoyer le message avec la demande
                 chargerDonnees();
+
+                lineEdit->clear(); // Vider le contenu de QLineEdit
             }
         }
     }
@@ -148,9 +171,7 @@ void Formgestion::chargerDonnees() {
         QTableWidgetItem* item7 = new QTableWidgetItem(d.date);
         tableWidget->setItem(i, col++, item7); // Utiliser col pour incrémenter la colonne
 
-        QTableWidgetItem* item = new QTableWidgetItem(d.nomFichierCarteGrise);
-        tableWidget->setItem(i, col++, item); // Utiliser col pour incrémenter la colonne
-        
+
     }
 }
 
@@ -178,3 +199,5 @@ void Formgestion::cellDoubleClicked(int row, int column) {
         msgBox.exec();
     }
 }
+
+
